@@ -7,7 +7,7 @@ var OrderedSelectBox = {
         // the words in text. (It's an AND search.)
         var item = $('#' + id);
         item.find('option').each(function() {
-        if ($(this).val() == filter) {
+        if ($(this).text().indexOf(text) != -1) {
             $(this).show();
         } else {
             $(this).hide();
@@ -42,20 +42,6 @@ var OrderedSelectBox = {
              to_box.append($(this))
           }
          });
-    },
-    sort: function(id) {
-        OrderedSelectBox.cache[id].sort( function(a, b) {
-            a = a.text.toLowerCase();
-            b = b.text.toLowerCase();
-            try {
-                if (a > b) return 1;
-                if (a < b) return -1;
-            }
-            catch (e) {
-                // silently fail on IE 'unknown' exception
-            }
-            return 0;
-        } );
     },
     orderUp: function(id) {
       $('#' + id).find('option:selected').each(function(){
