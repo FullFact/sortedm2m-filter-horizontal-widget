@@ -18,23 +18,28 @@ var OrderedSelectBox = {
         var from_box = $('#' + from);
         var to_box = $('#' + to);
         var option;
-        var that = this
         from_box.find('option:selected').each(function(){
-          sort = $(this).attr("data-sort-value")
+          var that = this
+          sort = $(this).attr("data-sort-value");
           // if we have a data-sort-value then scan the until
           // we find the right place
+           var inserted;
+
           if (sort) {
-            $.each(to_box.children, function(index, child){
-              if (child.getAttribute("data-sort-value") === sort + 1) {
-                that.insertAfter(child);
+            $.each(to_box.children(), function(index, child){
+              if (child.getAttribute("data-sort-value") > sort ) {
+                inserted = true;
+                $(that).insertBefore(to_box.children()[index]);
+                return false
               }
             });
           }
-
-          if (to_box.children().length){
-            $(this).insertAfter(to_box.children().last());
-          } else {
-             to_box.append($(this))
+          if (!inserted) {
+            if (to_box.children().length){
+              $(this).insertAfter(to_box.children().last());
+            } else {
+               to_box.append($(this))
+            }
           }
          });
     },
@@ -42,7 +47,7 @@ var OrderedSelectBox = {
         var from_box = $('#' + from);
         var to_box = $('#' + to);
         var option;
-        
+
         from_box.find('option').each(function(){
 
           if (to_box.children().length){
@@ -66,6 +71,7 @@ var OrderedSelectBox = {
       });
 
     },
+
     select_all: function(id) {
         var box = document.getElementById(id);
         for (var i = 0; i < box.options.length; i++) {
@@ -73,6 +79,7 @@ var OrderedSelectBox = {
         }
     }
 };
+
 
 // Overwrite dissmissAddAnotherPopup so the added item gets inserted in our OrderedSelectBox
 if (window.showAddAnotherPopup) {
