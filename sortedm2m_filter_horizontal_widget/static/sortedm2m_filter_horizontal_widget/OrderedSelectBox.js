@@ -23,11 +23,13 @@ var OrderedSelectBox = {
           sort = $(this).getAttribute("data-sort-value")
           // if we have a data-sort-value then scan the until
           // we find the right place
-         if (sort) {
-             to_box.children.each(function(){
-                 if $(this)
-             }
-         }
+          if (sort) {
+            $.each(to_box.children, function(index, child){
+              if (child.getAttribute("data-sort-value") === sort + 1) {
+                that.insertAfter(child);
+              }
+            });
+          }
 
           if (to_box.children().length){
             $(this).insertAfter(to_box.children().last());
