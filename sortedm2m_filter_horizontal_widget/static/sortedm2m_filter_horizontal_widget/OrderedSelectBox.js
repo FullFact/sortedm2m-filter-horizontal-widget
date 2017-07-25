@@ -18,11 +18,19 @@ var OrderedSelectBox = {
         var from_box = $('#' + from);
         var to_box = $('#' + to);
         var option;
-        
+        var that = this
         from_box.find('option:selected').each(function(){
+          sort = $(this).getAttribute("data-sort-value")
+          // if we have a data-sort-value then scan the until
+          // we find the right place
+         if (sort) {
+             to_box.children.each(function(){
+                 if $(this)
+             }
+         }
 
           if (to_box.children().length){
-            $(this).insertBefore(to_box.children().last());
+            $(this).insertAfter(to_box.children().last());
           } else {
              to_box.append($(this))
           }
