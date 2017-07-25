@@ -20,7 +20,7 @@ var OrderedSelectBox = {
         var option;
         var that = this
         from_box.find('option:selected').each(function(){
-          sort = $(this).getAttribute("data-sort-value")
+          sort = $(this).attr("data-sort-value")
           // if we have a data-sort-value then scan the until
           // we find the right place
           if (sort) {
