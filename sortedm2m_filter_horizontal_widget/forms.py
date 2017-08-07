@@ -157,7 +157,7 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
             '6': 'Archived',
         }
         try:
-            option_last_updated = option.updated_at
+            option_last_updated = option.updated_at.strftime('%d %b %y')
         except AttributeError:
             option_last_updated = None
         try:
