@@ -147,7 +147,28 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
 
         return mark_safe(u'\n'.join(output))
 
-    def render_option(self, selected_choices, option_value, option_label):
+    def get_option_title_text(self, option):
+        statuses = {
+            '1': 'Draft',
+            '2': 'Published',
+            '3': 'Under review',
+            '4': 'End of life',
+            '5': 'EU review',
+            '6': 'Archived',
+        }
+        try:
+            option_last_updated = option.updated_at
+        except AttributeError:
+            option_last_updated = None
+        try:
+            option_status = statuses[force_text(option.status)]
+        except AttributeError:
+            option_status = None
+
+        return "Last updated: {}\nStatus: {}".format(option_last_updated,
+                                                     option_status)
+
+    def render_option(self, selected_choices, option_value, option_label, option_title_text):
         option_value = force_text(option_value)
         selected_html = (option_value in selected_choices) and u' selected="selected"' or ''
         try:
@@ -156,22 +177,31 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
         except ValueError:
             pass
 
-        return u'<option value="%s"%s>%s</option>' % (
-            escape(option_value), selected_html,
+        return u'<option value="{}" title="{}" {}>{}</option>'.format(
+            escape(option_value), option_title_text, selected_html,
             conditional_escape(force_text(option_label)))
 
     def render_options(self, choices, selected_choices):
         # Normalize to strings.
         selected_choices = list(force_text(v) for v in selected_choices)
         output = []
-        for option_value, option_label in chain(self.choices, choices):
+
+        for item in chain(self.choices.queryset, choices):
+            option_label = force_text(item)
+            try:
+                option_value = item.id
+            except AttributeError:
+                option_value = ''
+
+            option_title_text = self.get_option_title_text(item)
+
             if isinstance(option_label, (list, tuple)):
                 output.append(u'<optgroup label="%s">' % escape(force_text(option_value)))
                 for option in option_label:
                     output.append(self.render_option(selected_choices, *option))
                 output.append(u'</optgroup>')
             else:
-                output.append(self.render_option(selected_choices, option_value, option_label))
+                output.append(self.render_option(selected_choices, option_value, option_label, option_title_text))
         return u'\n'.join(output)
 
     def _has_changed(self, initial, data):
