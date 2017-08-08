@@ -177,8 +177,8 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
         except ValueError:
             pass
 
-        return u'<option value="{}" title="{}" {}>{}</option>'.format(
-            escape(option_value), option_title_text, selected_html,
+        return u'<option title="{}" value="{}" {}>{}</option>'.format(
+            option_title_text, escape(option_value), selected_html,
             conditional_escape(force_text(option_label)))
 
     def render_options(self, choices, selected_choices):
