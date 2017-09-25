@@ -64,7 +64,7 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
     """
     A SortableSelectMultiple with a JavaScript filter interface.
 
-	Requires jQuery to be loaded.
+    Requires jQuery to be loaded.
 
     Note that the resulting JavaScript assumes that the jsi18n
     catalog has been loaded in the page
@@ -194,14 +194,15 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
                 option_value = ''
 
             option_title_text = self.get_option_title_text(item)
-
-            if isinstance(option_label, (list, tuple)):
-                output.append(u'<optgroup label="%s">' % escape(force_text(option_value)))
-                for option in option_label:
-                    output.append(self.render_option(selected_choices, *option))
-                output.append(u'</optgroup>')
-            else:
-                output.append(self.render_option(selected_choices, option_value, option_label, option_title_text))
+            # We only want to get selected choices, rendering all choices takes too long
+            if str(option_value) in selected_choices:
+                if isinstance(option_label, (list, tuple)):
+                    output.append(u'<optgroup label="%s">' % escape(force_text(option_value)))
+                    for option in option_label:
+                        output.append(self.render_option(selected_choices, *option))
+                    output.append(u'</optgroup>')
+                else:
+                    output.append(self.render_option(selected_choices, option_value, option_label, option_title_text))
         return u'\n'.join(output)
 
     def _has_changed(self, initial, data):
