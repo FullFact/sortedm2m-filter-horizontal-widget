@@ -136,8 +136,8 @@ var OrderedSelectFilter = {
         addEvent(add_link, 'click', function(e) { move_selection(e, this, OrderedSelectBox.move, field_id + '_from', field_id + '_to'); });
         addEvent(remove_link, 'click', function(e) { move_selection(e, this, OrderedSelectBox.move, field_id + '_to', field_id + '_from'); });
         addEvent(clear_all, 'click', function(e) { move_selection(e, this, OrderedSelectBox.move_all, field_id + '_to', field_id + '_from'); });
-        addEvent(filter_input, 'keyup', function(e) { OrderedSelectFilter.filter_key_up(e, field_id); });
-        addEvent(filter_input, 'keydown', function(e) { OrderedSelectFilter.filter_key_down(e, field_id); });
+        // addEvent(filter_input, 'keyup', function(e) { OrderedSelectFilter.filter_key_up(e, field_id); });
+        // addEvent(filter_input, 'keydown', function(e) { OrderedSelectFilter.filter_key_down(e, field_id); });
         addEvent(from_box, 'dblclick', function() { OrderedSelectBox.move(field_id + '_from', field_id + '_to'); });
         addEvent(to_box, 'dblclick', function() { OrderedSelectBox.move(field_id + '_to', field_id + '_from'); });
         addEvent(selector_div, 'change', function(e) {
@@ -177,38 +177,38 @@ var OrderedSelectFilter = {
         // Active if the corresponding box isn't empty
         $('#' + field_id + '_add_all_link').toggleClass('active', from.find('option').length > 0);
         $('#' + field_id + '_remove_all_link').toggleClass('active', to.find('option').length > 0);
-    },
-    filter_key_up: function(event, field_id) {
-        from = document.getElementById(field_id + '_from');
-        // don't submit form if user pressed Enter
-        if ((event.which && event.which == 13) || (event.keyCode && event.keyCode == 13)) {
-            from.selectedIndex = 0;
-            OrderedSelectBox.move(field_id + '_from', field_id + '_to');
-            from.selectedIndex = 0;
-            return false;
-        }
-        var temp = from.selectedIndex;
-        OrderedSelectBox.filter(field_id + '_from', document.getElementById(field_id + '_input').value);
-        from.selectedIndex = temp;
-        return true;
-    },
-    filter_key_down: function(event, field_id) {
-        from = document.getElementById(field_id + '_from');
-        // right arrow -- move across
-        if ((event.which && event.which == 39) || (event.keyCode && event.keyCode == 39)) {
-            var old_index = from.selectedIndex;
-            OrderedSelectBox.move(field_id + '_from', field_id + '_to');
-            from.selectedIndex = (old_index == from.length) ? from.length - 1 : old_index;
-            return false;
-        }
-        // down arrow -- wrap around
-        if ((event.which && event.which == 40) || (event.keyCode && event.keyCode == 40)) {
-            from.selectedIndex = (from.length == from.selectedIndex + 1) ? 0 : from.selectedIndex + 1;
-        }
-        // up arrow -- wrap around
-        if ((event.which && event.which == 38) || (event.keyCode && event.keyCode == 38)) {
-            from.selectedIndex = (from.selectedIndex == 0) ? from.length - 1 : from.selectedIndex - 1;
-        }
-        return true;
     }
+    // filter_key_up: function(event, field_id) {
+    //     from = document.getElementById(field_id + '_from');
+    //     // don't submit form if user pressed Enter
+    //     if ((event.which && event.which == 13) || (event.keyCode && event.keyCode == 13)) {
+    //         from.selectedIndex = 0;
+    //         OrderedSelectBox.move(field_id + '_from', field_id + '_to');
+    //         from.selectedIndex = 0;
+    //         return false;
+    //     }
+    //     var temp = from.selectedIndex;
+    //     OrderedSelectBox.filter(field_id + '_from', document.getElementById(field_id + '_input').value);
+    //     from.selectedIndex = temp;
+    //     return true;
+    // },
+    // filter_key_down: function(event, field_id) {
+    //     from = document.getElementById(field_id + '_from');
+    //     // right arrow -- move across
+    //     if ((event.which && event.which == 39) || (event.keyCode && event.keyCode == 39)) {
+    //         var old_index = from.selectedIndex;
+    //         OrderedSelectBox.move(field_id + '_from', field_id + '_to');
+    //         from.selectedIndex = (old_index == from.length) ? from.length - 1 : old_index;
+    //         return false;
+    //     }
+    //     // down arrow -- wrap around
+    //    if ((event.which && event.which == 40) || (event.keyCode && event.keyCode == 40)) {
+    //        from.selectedIndex = (from.length == from.selectedIndex + 1) ? 0 : from.selectedIndex + 1;
+    //    }
+    //     // up arrow -- wrap around
+    //    if ((event.which && event.which == 38) || (event.keyCode && event.keyCode == 38)) {
+    //        from.selectedIndex = (from.selectedIndex == 0) ? from.length - 1 : from.selectedIndex - 1;
+    //    }
+    //    return true;
+    // }
 };
