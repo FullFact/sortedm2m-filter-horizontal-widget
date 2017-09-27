@@ -76,7 +76,7 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
 
     class Media:
         css = {
-            'screen': STATIC_URL + 'sortedm2m_filter_horizontal_widget/widget.css'
+            'all': (STATIC_URL + 'sortedm2m_filter_horizontal_widget/widget.css', )
         }
 
         js = (STATIC_URL + 'sortedm2m_filter_horizontal_widget/OrderedSelectBox.js',
