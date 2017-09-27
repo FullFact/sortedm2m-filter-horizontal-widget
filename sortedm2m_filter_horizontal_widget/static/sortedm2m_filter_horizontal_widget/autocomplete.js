@@ -1,10 +1,11 @@
-var fieldName = 'id_debate_1_content'
+var fieldName = 'id_debate_1_content';
 
 $('#' + fieldName + '_input').focus(function(e) {
     var searchField = $(e.currentTarget);
     var url = searchField.attr("data-autocomplete-light-url");
 
-    var resultsShowing = $(fieldName + '_results').length > 0;
+    var resultsShowing = $('#' + fieldName + '_results').length > 0;
+
     if (!resultsShowing) {
         $.getJSON( url, function( data ) {
             var searchResultsBox = $(document.createElement('div'))
@@ -16,7 +17,6 @@ $('#' + fieldName + '_input').focus(function(e) {
                 result.attr('value', content.id);
                 searchResultsBox.append(result);
             });
-            console.log(searchResultsBox);
             searchField.after(searchResultsBox);
         });
     }
