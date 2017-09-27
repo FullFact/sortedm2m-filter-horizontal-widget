@@ -97,3 +97,15 @@ body.change-form .sortedm2m-container {
 .selector-down:hover {
   background: url(../admin/img/selector-icons.svg) 0 -47px no-repeat;
 }
+
+
+/* Styles for new autocomplete-style search interface */
+.search-results option {
+    padding-top: 5px;
+}
+.search-results {
+    font-size: 13px;
+    color: #222;
+    padding-top: 10px;
+    position: absolute;
+}
