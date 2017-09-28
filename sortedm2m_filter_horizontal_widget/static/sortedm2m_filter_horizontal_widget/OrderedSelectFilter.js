@@ -186,7 +186,8 @@ var OrderedSelectFilter = {
             var resultsShowing = $('#' + field_id + '_results').length > 0;
 
             if (!resultsShowing) {
-                var searchResultsBox = $('#' + field_id + '_from');
+                var searchResultsBox = $('#' + field_id + '_from')
+                    .attr('id', field_id + '_results');
                 urls.forEach(function(url) {
                     $.getJSON(url, function(data) {
                         data.results.forEach(function(content) {
@@ -194,7 +195,6 @@ var OrderedSelectFilter = {
                             result.attr('value', content.id);
                             searchResultsBox.append(result);
                         });
-                        searchField.after(searchResultsBox);
                     });
                 })
             }

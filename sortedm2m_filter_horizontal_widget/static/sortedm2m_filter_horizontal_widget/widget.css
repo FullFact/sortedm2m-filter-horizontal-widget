@@ -97,13 +97,6 @@ body.change-form .sortedm2m-container {
 .selector-down:hover {
   background: url(../admin/img/selector-icons.svg) 0 -47px no-repeat;
 }
-.selector-filter {
-  padding-left: 0;
-  padding-bottom: 0;
-  margin-bottom: 10px;
-  border-bottom-right-radius: 5px;
-  border-bottom-left-radius: 5px;
-}
 .selector-filter input {
   margin-bottom: 10px;
 }
