@@ -183,11 +183,11 @@ var OrderedSelectFilter = {
                 urls.push(url + '?page=' + page);
             });
 
-            var resultsShowing = $('#' + field_id + '_results').length > 0;
+            var resultsShowing = $('.' + field_id + '_results').length > 0;
 
             if (!resultsShowing) {
                 var searchResultsBox = $('#' + field_id + '_from')
-                    .attr('id', field_id + '_results');
+                    .addClass(field_id + '_results');
                 urls.forEach(function(url) {
                     $.getJSON(url, function(data) {
                         data.results.forEach(function(content) {
