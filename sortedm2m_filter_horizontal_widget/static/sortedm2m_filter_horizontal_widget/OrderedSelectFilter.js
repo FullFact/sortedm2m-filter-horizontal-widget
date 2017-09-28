@@ -82,7 +82,7 @@ var OrderedSelectFilter = {
                 'data-autocomplete-light-url', '/content-autocomplete/'
             );
         filter_input.id = field_id + '_input';
-        $(selector_available).after($(from_box));
+        selector_available.appendChild(from_box);
         var choose_all = quickElement('a', selector_available, gettext('Choose all'), 'href', 'javascript: (function(){ OrderedSelectBox.move_all("' + field_id + '_from", "' + field_id + '_to"); })()');
         choose_all.className = 'selector-chooseall';
 
