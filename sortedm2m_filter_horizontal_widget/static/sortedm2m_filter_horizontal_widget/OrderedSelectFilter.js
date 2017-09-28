@@ -171,27 +171,32 @@ var OrderedSelectFilter = {
 
         // Convert search function to use a django-autocomplete-light view instead of rendering all content from the get-go 
         // This is shoved in here to make sure it happens after the widget has been constructed
-        var fieldName = 'id_debate_1_content';
 
-        $('#' + fieldName + '_input').focus(function(e) {
+        $('#' + field_id + '_input').focus(function(e) {
             var searchField = $(e.currentTarget);
             var url = searchField.attr("data-autocomplete-light-url");
 
-            var resultsShowing = $('#' + fieldName + '_results').length > 0;
+            var pagesToGet = [1, 2, 3];
+
+            urls = [];
+            pagesToGet.forEach(function(page) {
+                urls.push(url + '?page=' + page);
+            });
+
+            var resultsShowing = $('#' + field_id + '_results').length > 0;
 
             if (!resultsShowing) {
-                $.getJSON( url, function( data ) {
-                    var searchResultsBox = $(document.createElement('div'))
-                        .addClass('search-results')
-                        .attr('id', fieldName + '_results');
-
-                    data.results.forEach(function(content) {
-                        var result = $(document.createElement('option')).text(content.text);
-                        result.attr('value', content.id);
-                        searchResultsBox.append(result);
+                var searchResultsBox = $('#' + field_id + '_from').addClass('search-results');
+                urls.forEach(function(url) {
+                    $.getJSON(url, function(data) {
+                        data.results.forEach(function(content) {
+                            var result = $(document.createElement('option')).text(content.text);
+                            result.attr('value', content.id);
+                            searchResultsBox.append(result);
+                        });
+                        searchField.after(searchResultsBox);
                     });
-                    searchField.after(searchResultsBox);
-                });
+                })
             }
         });
     },
