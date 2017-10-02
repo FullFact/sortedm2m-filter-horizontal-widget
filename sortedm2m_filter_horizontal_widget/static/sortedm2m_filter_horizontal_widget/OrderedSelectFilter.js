@@ -171,8 +171,8 @@ var OrderedSelectFilter = {
 
         // Convert search function to use a django-autocomplete-light view instead of rendering all content from the get-go 
         // This is shoved in here to make sure it happens after the widget has been constructed
-
-        $('#' + field_id + '_input').focus(function(e) {
+        var searchBox = $('#' + field_id + '_input');
+        searchBox.focus(function(e) {
             var searchField = $(e.currentTarget);
             var url = searchField.attr("data-autocomplete-light-url");
 
@@ -193,11 +193,45 @@ var OrderedSelectFilter = {
                         data.results.forEach(function(content) {
                             var result = $(document.createElement('option')).text(content.text);
                             result.attr('value', content.id);
+                            result.attr('title', content.status);
                             searchResultsBox.append(result);
                         });
                     });
                 })
             }
+        });
+        searchBox.keyup(function(e) {
+            var searchTerm = searchBox[0].value;
+
+            var searchField = $(e.currentTarget);
+            var url = searchField.attr("data-autocomplete-light-url");
+
+            var pagesToGet = [1, 2, 3];
+
+            urls = [];
+            pagesToGet.forEach(function(page) {
+                urls.push(url + '?page=' + page + '&q=' + searchTerm);
+            });
+
+            var searchResultsBox = $('#' + field_id + '_from')
+                .addClass(field_id + '_results');
+            var results = $('.' + field_id + '_results option')
+            var resultsShowing = results.length > 0;
+
+            if (resultsShowing) {
+                console.log("removing initial content");
+                results.remove();
+            }
+            urls.forEach(function(url) {
+                $.getJSON(url, function(data) {
+                    data.results.forEach(function(content) {
+                        var result = $(document.createElement('option')).text(content.text);
+                        result.attr('value', content.id);
+                        result.attr('title', content.status);
+                        searchResultsBox.append(result);
+                    });
+                });
+            })
         });
     },
     refresh_icons: function(field_id) {
