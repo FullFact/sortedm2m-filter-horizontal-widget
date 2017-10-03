@@ -14,6 +14,25 @@ function findForm(node) {
     return node;
 }
 
+function append_results(url, q, page, searchResultsBox) {
+    query_url = url + "?page=" + page;
+    if (q !== null) {
+        query_url = query_url + "&q=" + q;
+    }
+    $.getJSON(query_url, function(data) {
+        data.results.forEach(function(content) {
+            var result = $(document.createElement('option')).text(content.text);
+            result.attr('value', content.id);
+            result.attr('title', content.title_text);
+            searchResultsBox.append(result);
+        });
+        var maxPages = 10;
+        if (data.pagination.more && page < maxPages) {
+            append_results(url, q, page + 1, searchResultsBox)
+        }
+    });
+}
+
 var OrderedSelectFilter = {
     init: function(field_id, field_name, is_stacked) {
         if (field_id.match(/__prefix__/)){
@@ -176,28 +195,12 @@ var OrderedSelectFilter = {
             var searchField = $(e.currentTarget);
             var url = searchField.attr("data-autocomplete-light-url");
 
-            var pagesToGet = [1, 2, 3];
-
-            urls = [];
-            pagesToGet.forEach(function(page) {
-                urls.push(url + '?page=' + page);
-            });
-
             var resultsShowing = $('.' + field_id + '_results').length > 0;
 
             if (!resultsShowing) {
                 var searchResultsBox = $('#' + field_id + '_from')
                     .addClass(field_id + '_results');
-                urls.forEach(function(url) {
-                    $.getJSON(url, function(data) {
-                        data.results.forEach(function(content) {
-                            var result = $(document.createElement('option')).text(content.text);
-                            result.attr('value', content.id);
-                            result.attr('title', content.title_text);
-                            searchResultsBox.append(result);
-                        });
-                    });
-                })
+                append_results(url, null, 1, searchResultsBox);
             }
         });
         searchBox.keyup(function(e) {
@@ -206,31 +209,15 @@ var OrderedSelectFilter = {
             var searchField = $(e.currentTarget);
             var url = searchField.attr("data-autocomplete-light-url");
 
-            var pagesToGet = [1, 2, 3];
-
-            urls = [];
-            pagesToGet.forEach(function(page) {
-                urls.push(url + '?page=' + page + '&q=' + searchTerm);
-            });
-
             var searchResultsBox = $('#' + field_id + '_from')
                 .addClass(field_id + '_results');
-            var results = $('.' + field_id + '_results option')
+            var results = $('.' + field_id + '_results option');
             var resultsShowing = results.length > 0;
 
             if (resultsShowing) {
                 results.remove();
             }
-            urls.forEach(function(url) {
-                $.getJSON(url, function(data) {
-                    data.results.forEach(function(content) {
-                        var result = $(document.createElement('option')).text(content.text);
-                        result.attr('value', content.id);
-                        result.attr('title', content.title_text);
-                        searchResultsBox.append(result);
-                    });
-                });
-            })
+            append_results(url, searchTerm, 1, searchResultsBox);
         });
     },
     refresh_icons: function(field_id) {
