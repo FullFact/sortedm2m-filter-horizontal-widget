@@ -98,7 +98,8 @@ var OrderedSelectFilter = {
 
         var filter_input = quickElement('input', filter_p, '',
                 'type', 'text',
-                'data-autocomplete-light-url', '/content-autocomplete/'
+                'data-autocomplete-light-url', '/content-autocomplete/',
+                'placeholder', 'Type here to search available content',
             );
         filter_input.id = field_id + '_input';
         selector_available.appendChild(from_box);
