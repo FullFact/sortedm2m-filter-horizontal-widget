@@ -193,7 +193,7 @@ var OrderedSelectFilter = {
                         data.results.forEach(function(content) {
                             var result = $(document.createElement('option')).text(content.text);
                             result.attr('value', content.id);
-                            result.attr('title', content.status);
+                            result.attr('title', content.title_text);
                             searchResultsBox.append(result);
                         });
                     });
@@ -219,7 +219,6 @@ var OrderedSelectFilter = {
             var resultsShowing = results.length > 0;
 
             if (resultsShowing) {
-                console.log("removing initial content");
                 results.remove();
             }
             urls.forEach(function(url) {
@@ -227,7 +226,7 @@ var OrderedSelectFilter = {
                     data.results.forEach(function(content) {
                         var result = $(document.createElement('option')).text(content.text);
                         result.attr('value', content.id);
-                        result.attr('title', content.status);
+                        result.attr('title', content.title_text);
                         searchResultsBox.append(result);
                     });
                 });
