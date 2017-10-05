@@ -18,6 +18,10 @@ class SelectMultiple(forms.SelectMultiple):
         """Build HTML attributes for the widget."""
         attrs = super().build_attrs(base_attrs, extra_attrs=None)
 
+        classes = attrs.setdefault('class', '').split()
+        classes.append('sortedm2m')
+        attrs['class'] = u' '.join(classes)
+
         if self.url is not None:
             attrs['data-autocomplete-light-url'] = '/' + self.url + '/'
 
