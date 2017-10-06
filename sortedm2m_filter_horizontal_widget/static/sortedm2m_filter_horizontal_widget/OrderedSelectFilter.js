@@ -188,36 +188,32 @@ var OrderedSelectFilter = {
         // Initial icon refresh
         OrderedSelectFilter.refresh_icons(field_id);
 
+        // Get autocomplete url
+        var resultsBox = $('#' + field_id + '_from').addClass(field_id + '_results');
+        var url = resultsBox.attr("data-autocomplete-light-url");
         // Convert search function to use a django-autocomplete-light view instead of rendering all content from the get-go 
         // This is shoved in here to make sure it happens after the widget has been constructed
         var searchBox = $('#' + field_id + '_input');
         searchBox.focus(function(e) {
             var searchField = $(e.currentTarget);
-            var url = searchField.attr("data-autocomplete-light-url");
 
-            var resultsShowing = $('.' + field_id + '_results').length > 0;
+            var results = $('.' + field_id + '_results option');
+            var resultsShowing = results.length > 0;
 
             if (!resultsShowing) {
-                var searchResultsBox = $('#' + field_id + '_from')
-                    .addClass(field_id + '_results');
-                append_results(url, null, 1, searchResultsBox);
+                append_results(url, null, 1, resultsBox);
             }
         });
         searchBox.keyup(function(e) {
             var searchTerm = searchBox[0].value;
 
-            var searchField = $(e.currentTarget);
-            var url = searchField.attr("data-autocomplete-light-url");
-
-            var searchResultsBox = $('#' + field_id + '_from')
-                .addClass(field_id + '_results');
             var results = $('.' + field_id + '_results option');
             var resultsShowing = results.length > 0;
 
             if (resultsShowing) {
                 results.remove();
             }
-            append_results(url, searchTerm, 1, searchResultsBox);
+            append_results(url, searchTerm, 1, resultsBox);
         });
     },
     refresh_icons: function(field_id) {
