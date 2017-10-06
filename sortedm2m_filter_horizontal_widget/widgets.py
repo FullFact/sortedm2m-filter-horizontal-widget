@@ -9,9 +9,7 @@ class SelectMultiple(forms.SortedFilteredSelectMultiple):
 
     def __init__(self, url=None, *args, **kwargs):
         """Instanciate a widget with a URL."""
-        print('init')
         self.url = url
-        self.placeholder = kwargs.get("attrs", {}).get("data-placeholder")
         super().__init__(*args, **kwargs)
 
     def build_attrs(self, base_attrs, extra_attrs=None, name=None):
@@ -27,5 +25,4 @@ class SelectMultiple(forms.SortedFilteredSelectMultiple):
         if autocomplete_function:
             attrs.setdefault('data-autocomplete-light-function',
                              autocomplete_function)
-        print(attrs)
         return attrs

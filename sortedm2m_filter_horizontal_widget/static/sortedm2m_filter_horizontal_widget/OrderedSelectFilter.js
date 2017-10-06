@@ -98,7 +98,7 @@ var OrderedSelectFilter = {
 
         var filter_input = quickElement('input', filter_p, '',
                 'type', 'text',
-                'placeholder', 'Type here to search available content',
+                'placeholder', 'Type here to see/search available options',
             );
         filter_input.id = field_id + '_input';
         selector_available.appendChild(from_box);
