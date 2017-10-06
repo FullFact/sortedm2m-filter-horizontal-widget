@@ -1,7 +1,7 @@
-from django import forms
+from . import forms
 
 
-class SelectMultiple(forms.SelectMultiple):
+class SelectMultiple(forms.SortedFilteredSelectMultiple):
     """New SelectMultiple widget which just adds an autocomplete URL to the
     base SelectMultiple widget. This makes sorted-m2m-filter-horizontal-widget
     compatible with django-autocomplete-light.
@@ -14,13 +14,9 @@ class SelectMultiple(forms.SelectMultiple):
         self.placeholder = kwargs.get("attrs", {}).get("data-placeholder")
         super().__init__(*args, **kwargs)
 
-    def build_attrs(self, base_attrs, extra_attrs=None):
+    def build_attrs(self, base_attrs, extra_attrs=None, name=None):
         """Build HTML attributes for the widget."""
         attrs = super().build_attrs(base_attrs, extra_attrs=None)
-
-        classes = attrs.setdefault('class', '').split()
-        classes.append('sortedm2m')
-        attrs['class'] = u' '.join(classes)
 
         if self.url is not None:
             attrs['data-autocomplete-light-url'] = '/' + self.url + '/'
