@@ -17,6 +17,7 @@ class SelectMultiple(forms.SortedFilteredSelectMultiple):
         attrs = super().build_attrs(base_attrs, extra_attrs=None)
 
         attrs['id'] = 'id_' + name
+        attrs['name'] = name
 
         if self.url is not None:
             attrs['data-autocomplete-light-url'] = '/' + self.url + '/'
