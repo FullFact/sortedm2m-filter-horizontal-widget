@@ -38,9 +38,7 @@ class SortedMultipleChoiceField(forms.ModelMultipleChoiceField):
         super(SortedMultipleChoiceField, self).__init__(*args, **kwargs)
 
     def clean(self, value):
-        published_statuses = [2, 3, 5, 6]
-        queryset = super(SortedMultipleChoiceField, self).clean(value)\
-            .filter(status__in=published_statuses)
+        queryset = super(SortedMultipleChoiceField, self).clean(value)
         if value is None or not isinstance(queryset, QuerySet):
             return queryset
         object_list = dict((
