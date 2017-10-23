@@ -145,27 +145,6 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
 
         return mark_safe(u'\n'.join(output))
 
-    def get_option_title_text(self, option):
-        statuses = {
-            '1': 'Draft',
-            '2': 'Published',
-            '3': 'Under review',
-            '4': 'End of life',
-            '5': 'EU review',
-            '6': 'Archived',
-        }
-        try:
-            option_last_updated = option.updated_at.strftime('%d %b %y')
-        except AttributeError:
-            option_last_updated = None
-        try:
-            option_status = statuses[force_text(option.status)]
-        except AttributeError:
-            option_status = None
-
-        return "Last updated: {}\nStatus: {}".format(option_last_updated,
-                                                     option_status)
-
     def render_option(self, selected_choices, option_value, option_label, option_title_text):
         option_value = force_text(option_value)
         selected_html = (option_value in selected_choices) and u' selected="selected"' or ''
@@ -175,9 +154,14 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
         except ValueError:
             pass
 
-        return u'<option title="{}" value="{}" {}>{}</option>'.format(
-            option_title_text, escape(option_value), selected_html,
-            conditional_escape(force_text(option_label)))
+        if option_title_text is not None:
+            return u'<option title="{}" value="{}" {}>{}</option>'.format(
+                option_title_text, escape(option_value), selected_html,
+                conditional_escape(force_text(option_label)))
+        else:
+            return u'<option value="{}" {}>{}</option>'.format(
+                escape(option_value), selected_html,
+                conditional_escape(force_text(option_label)))
 
     def render_options(self, choices, selected_choices):
         # Normalize to strings.
@@ -191,7 +175,11 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
             except AttributeError:
                 option_value = ''
 
-            option_title_text = self.get_option_title_text(item)
+            try:
+                option_title_text = item.get_admin_sortedm2m_title_text()
+            except AttributeError:
+                option_title_text = None
+
             # We only want to get selected choices, rendering all choices takes too long
             if str(option_value) in selected_choices:
                 if isinstance(option_label, (list, tuple)):
