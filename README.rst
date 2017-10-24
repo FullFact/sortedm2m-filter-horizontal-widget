@@ -1,3 +1,5 @@
+This file might look weird because I changed it to markdown, and then the module refused to compile without a README.rst file, so changed back but kept markdown syntax because I don't have time.
+
 # django-sortedm2m-filter-horizontal-widget
 
 
