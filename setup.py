@@ -56,7 +56,7 @@ class UltraMagicString(object):
 
 
 long_description = UltraMagicString('\n\n'.join((
-    read('README.rst'),
+    read('README.md'),
     read('CHANGES.rst'),
 )))
 
