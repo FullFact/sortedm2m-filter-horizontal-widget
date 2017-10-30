@@ -170,7 +170,12 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
         selected_choices = list(force_text(v) for v in selected_choices)
         output = []
 
-        for item in self.selected_choices:
+        if self.selected_choices != ():
+            choices = self.selected_choices
+        else:
+            choices = self.choices.queryset
+
+        for item in choices:
             option_label = force_text(item)
             try:
                 option_value = item.id
