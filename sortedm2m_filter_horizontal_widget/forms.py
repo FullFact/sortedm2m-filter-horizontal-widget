@@ -69,8 +69,9 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
     """
 
     def __init__(self, is_stacked=False, attrs=None, choices=()):
-        self.is_stacked = is_stacked
         super(SortedFilteredSelectMultiple, self).__init__(attrs, choices)
+        self.is_stacked = is_stacked
+        self.selected_choices = choices
 
     class Media:
         css = {
@@ -95,10 +96,11 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
     def render(self, name, value, attrs=None, choices=()):
         if attrs is None: attrs = {}
         if value is None: value = []
+
         admin_media_prefix = getattr(settings, 'ADMIN_MEDIA_PREFIX', STATIC_URL + 'admin/')
         final_attrs = self.build_attrs(self.attrs, attrs, name=name)
         output = [u'<select multiple="multiple"%s>' % flatatt(final_attrs)]
-        options = self.render_options(choices, value)
+        options = self.render_options(value)
         if options:
             output.append(options)
         output.append(u'</select>')
@@ -163,12 +165,12 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
                 escape(option_value), selected_html,
                 conditional_escape(force_text(option_label)))
 
-    def render_options(self, choices, selected_choices):
+    def render_options(self, selected_choices):
         # Normalize to strings.
         selected_choices = list(force_text(v) for v in selected_choices)
         output = []
 
-        for item in chain(self.choices.queryset, choices):
+        for item in self.selected_choices:
             option_label = force_text(item)
             try:
                 option_value = item.id

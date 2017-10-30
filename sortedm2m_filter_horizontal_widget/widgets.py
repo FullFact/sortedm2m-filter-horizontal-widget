@@ -7,10 +7,10 @@ class SelectMultiple(forms.SortedFilteredSelectMultiple):
     compatible with django-autocomplete-light.
     """
 
-    def __init__(self, url=None, *args, **kwargs):
+    def __init__(self, url=None, choices=(), *args, **kwargs):
         """Instanciate a widget with a URL."""
+        super().__init__(choices=choices, *args, **kwargs)
         self.url = url
-        super().__init__(*args, **kwargs)
 
     def build_attrs(self, base_attrs, extra_attrs=None, name=None):
         """Build HTML attributes for the widget."""
