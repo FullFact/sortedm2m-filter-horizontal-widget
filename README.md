@@ -135,7 +135,7 @@ class WorldAdmin(admin.ModelAdmin):
 
 If you have a singleton model with only one instance, you can do something like this, which explicitly gets the options that are currently selected for the field, and uses them to populate the widget:
 
-```
+```python
 def formfield_for_manytomany(self, db_field, request=None, **kwargs):
     if db_field.name == 'country':
         country = models.Country.get()
