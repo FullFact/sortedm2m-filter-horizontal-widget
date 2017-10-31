@@ -1,7 +1,4 @@
-This file might look weird because I changed it to markdown, and then the module refused to compile without a README.rst file, so changed back but kept markdown syntax because I don't have time.
-
 # django-sortedm2m-filter-horizontal-widget
-
 
 ``sortedm2m-filter-horizontal-widget`` is an admin widget for Gregor Mülleggers excellent django-sortedm2m library.
 
@@ -15,7 +12,6 @@ dal: http://django-autocomplete-light.readthedocs.io/en/master/tutorial.html
 
 
 ## How it works
-
 
 It's an integration of django-sortedm2m-filter-horizontal-widget and django-autocomplete-light.
 
@@ -98,7 +94,6 @@ You should now be able to view your results at that url, add a '?q=search-term' 
 
 ### Using the widget for a field
 
-
 You can set fields to use this widget by overriding the formfield_for_manytomany method on the relevant admin class:
 
 For one field:
@@ -134,3 +129,21 @@ class WorldAdmin(admin.ModelAdmin):
                 kwargs['widget'] = SelectMultiple(url='country-autocomplete')
         return super().formfield_for_manytomany(db_field, request, **kwargs)
 ```
+
+
+### Bit of a hack that can drastically improve performance in certain cases
+
+If you have a singleton model with only one instance, you can do something like this, which explicitly gets the options that are currently selected for the field, and uses them to populate the widget:
+
+```
+def formfield_for_manytomany(self, db_field, request=None, **kwargs):
+    if db_field.name == 'country':
+        country = models.Country.get()
+        selected_choices = getattr(country, db_field.name).all()
+        kwargs['widget'] = sortedm2m_filter_horizontal_widget.widgets.SelectMultiple(choices=selected_choices, url='country-autocomplete')
+    return super().formfield_for_manytomany(db_field, request, **kwargs)
+```
+
+By default the widget queries the db for *all* available options for the field. With this version of the widget you don't actually need all options, you just need *selected* options to start with, the rest come later. If you pass a `choices` argument then it cuts out unnecessary queries and speeds things up.
+
+If you omit the `choices` argument then it defaults to querying for all available options.
