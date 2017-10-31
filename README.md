@@ -136,12 +136,18 @@ class WorldAdmin(admin.ModelAdmin):
 If you have a singleton model with only one instance, you can do something like this, which explicitly gets the options that are currently selected for the field, and uses them to populate the widget:
 
 ```python
-def formfield_for_manytomany(self, db_field, request=None, **kwargs):
-    if db_field.name == 'country':
-        country = models.Country.get()
-        selected_choices = getattr(country, db_field.name).all()
-        kwargs['widget'] = sortedm2m_filter_horizontal_widget.widgets.SelectMultiple(choices=selected_choices, url='country-autocomplete')
-    return super().formfield_for_manytomany(db_field, request, **kwargs)
+from sortedm2m_filter_horizontal_widget.widgets import SelectMultiple
+
+
+class WorldAdmin(admin.ModelAdmin):
+    # ...
+    
+    def formfield_for_manytomany(self, db_field, request=None, **kwargs):
+        if db_field.name == 'country':
+            country = models.Country.get()
+            selected_choices = getattr(country, db_field.name).all()
+            kwargs['widget'] = sortedm2m_filter_horizontal_widget.widgets.SelectMultiple(choices=selected_choices, url='country-autocomplete')
+        return super().formfield_for_manytomany(db_field, request, **kwargs)
 ```
 
 By default the widget queries the db for *all* available options for the field. With this version of the widget you don't actually need all options, you just need *selected* options to start with, the rest come later. If you pass a `choices` argument then it cuts out unnecessary queries and speeds things up.
