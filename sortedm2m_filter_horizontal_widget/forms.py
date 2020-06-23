@@ -104,7 +104,7 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
         if options:
             output.append(options)
         output.append(u'</select>')
-        output.append(u'<script>addEvent(window, "load", function(e) {')
+        output.append(u'<script>window.addEventListener("load", function(e) {')
         output.append(u'OrderedSelectFilter.init("id_%s", "%s", %s, "%s") });</script>\n' %\
                       (name, name.split('-')[-1], int(self.is_stacked), admin_media_prefix))
 

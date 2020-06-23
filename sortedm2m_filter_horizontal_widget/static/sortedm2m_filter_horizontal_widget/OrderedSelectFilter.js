@@ -154,20 +154,20 @@ var OrderedSelectFilter = {
             }
             e.preventDefault();
         };
-        addEvent(choose_all, 'click', function(e) { move_selection(e, this, OrderedSelectBox.move_all, field_id + '_from', field_id + '_to'); });
-        addEvent(add_link, 'click', function(e) { move_selection(e, this, OrderedSelectBox.move, field_id + '_from', field_id + '_to'); });
-        addEvent(remove_link, 'click', function(e) { move_selection(e, this, OrderedSelectBox.move, field_id + '_to', field_id + '_from'); });
-        addEvent(clear_all, 'click', function(e) { move_selection(e, this, OrderedSelectBox.move_all, field_id + '_to', field_id + '_from'); });
-        // addEvent(filter_input, 'keyup', function(e) { OrderedSelectFilter.filter_key_up(e, field_id); });
-        // addEvent(filter_input, 'keydown', function(e) { OrderedSelectFilter.filter_key_down(e, field_id); });
-        addEvent(from_box, 'dblclick', function() { OrderedSelectBox.move(field_id + '_from', field_id + '_to'); });
-        addEvent(to_box, 'dblclick', function() { OrderedSelectBox.move(field_id + '_to', field_id + '_from'); });
-        addEvent(selector_div, 'change', function(e) {
+        choose_all.addEventListener('click', function(e) { move_selection(e, this, OrderedSelectBox.move_all, field_id + '_from', field_id + '_to'); });
+        add_link.addEventListener('click', function(e) { move_selection(e, this, OrderedSelectBox.move, field_id + '_from', field_id + '_to'); });
+        remove_link.addEventListener('click', function(e) { move_selection(e, this, OrderedSelectBox.move, field_id + '_to', field_id + '_from'); });
+        clear_all.addEventListener('click', function(e) { move_selection(e, this, OrderedSelectBox.move_all, field_id + '_to', field_id + '_from'); });
+        // filter_input.addEventListener('keyup', function(e) { OrderedSelectFilter.filter_key_up(e, field_id); });
+        // filter_input.addEventListener('keydown', function(e) { OrderedSelectFilter.filter_key_down(e, field_id); });
+        from_box.addEventListener('dblclick', function() { OrderedSelectBox.move(field_id + '_from', field_id + '_to'); });
+        to_box.addEventListener('dblclick', function() { OrderedSelectBox.move(field_id + '_to', field_id + '_from'); });
+        selector_div.addEventListener('change', function(e) {
             if (e.target.tagName === 'SELECT') {
                 OrderedSelectFilter.refresh_icons(field_id);
             }
         });
-        addEvent(findForm(from_box), 'submit', function() { OrderedSelectBox.select_all(field_id + '_to'); });
+        findForm(from_box).addEventListener('submit', function() { OrderedSelectBox.select_all(field_id + '_to'); });
         OrderedSelectBox.init(field_id + '_from');
         OrderedSelectBox.init(field_id + '_to');
         // Move selected from_box options to to_box
