@@ -5,65 +5,65 @@ var OrderedSelectBox = {
   filter: function(id, text) {
     // Redisplay the HTML select box, displaying only the choices containing ALL
     // the words in text. (It's an AND search.)
-    var item = $('#' + id);
+    var item = django.jQuery('#' + id);
     item.find('option').each(function() {
-      if ($(this).text().indexOf(text) != -1) {
-        $(this).show();
+      if (django.jQuery(this).text().indexOf(text) != -1) {
+        django.jQuery(this).show();
       } else {
-        $(this).hide();
+        django.jQuery(this).hide();
       }
     })
   },
   move: function(from, to) {
-    var from_box = $('#' + from);
-    var to_box = $('#' + to);
+    var from_box = django.jQuery('#' + from);
+    var to_box = django.jQuery('#' + to);
     var option;
     from_box.find('option:selected').each(function() {
       var that = this;
-      sort = $(this).attr("data-sort-value");
+      sort = django.jQuery(this).attr("data-sort-value");
       // if we have a data-sort-value then scan the until
       // we find the right place
       var inserted;
       if (sort) {
-        $.each(to_box.children(), function(index, child) {
+        django.jQuery.each(to_box.children(), function(index, child) {
           if (child.getAttribute("data-sort-value") > sort ) {
             inserted = true;
-            $(that).insertBefore(to_box.children()[index]);
+            django.jQuery(that).insertBefore(to_box.children()[index]);
             return false;
           }
         });
       }
       if (!inserted) {
         if (to_box.children().length){
-          $(this).insertAfter(to_box.children().last());
+          django.jQuery(this).insertAfter(to_box.children().last());
         } else {
-           to_box.append($(this));
+           to_box.append(django.jQuery(this));
         }
       }
     });
   },
   move_all: function(from, to) {
-    var from_box = $('#' + from);
-    var to_box = $('#' + to);
+    var from_box = django.jQuery('#' + from);
+    var to_box = django.jQuery('#' + to);
     var option;
 
     from_box.find('option').each(function(){
       if (to_box.children().length){
-        $(this).insertBefore(to_box.children().last());
+        django.jQuery(this).insertBefore(to_box.children().last());
       } else {
-         to_box.append($(this));
+         to_box.append(django.jQuery(this));
       }
      });
   },
   orderUp: function(id) {
-    $('#' + id).find('option:selected').each(function(){
-      $(this).insertBefore($(this).prev());
+    django.jQuery('#' + id).find('option:selected').each(function(){
+      django.jQuery(this).insertBefore(django.jQuery(this).prev());
     });
 
   },
   orderDown: function(id) {
-    $('#' + id).find('option:selected').each(function(){
-      $(this).insertAfter($(this).next());
+    django.jQuery('#' + id).find('option:selected').each(function(){
+      django.jQuery(this).insertAfter(django.jQuery(this).next());
     });
   },
 

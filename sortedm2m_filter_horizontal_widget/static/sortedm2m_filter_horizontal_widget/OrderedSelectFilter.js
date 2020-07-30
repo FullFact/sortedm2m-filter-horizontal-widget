@@ -19,9 +19,9 @@ function append_results(url, q, page, searchResultsBox) {
     if (q !== null) {
         query_url = query_url + "&q=" + q;
     }
-    $.getJSON(query_url, function(data) {
+    django.jQuery.getJSON(query_url, function(data) {
         data.results.forEach(function(content) {
-            var result = $(document.createElement('option')).text(content.text);
+            var result = django.jQuery(document.createElement('option')).text(content.text);
             result.attr('value', content.id);
             result.attr('title', content.title_text);
             searchResultsBox.append(result);
@@ -175,9 +175,9 @@ var OrderedSelectFilter = {
 
         if (!is_stacked) {
             // In horizontal mode, give the same height to the two boxes.
-            var j_from_box = $(from_box);
-            var j_to_box = $(to_box);
-            var resize_filters = function() { j_to_box.height($(filter_p).outerHeight() + j_from_box.outerHeight()); };
+            var j_from_box = django.jQuery(from_box);
+            var j_to_box = django.jQuery(to_box);
+            var resize_filters = function() { j_to_box.height(django.jQuery(filter_p).outerHeight() + j_from_box.outerHeight()); };
             if (j_from_box.outerHeight() > 0) {
                 resize_filters(); // This fieldset is already open. Resize now.
             } else {
@@ -189,15 +189,15 @@ var OrderedSelectFilter = {
         OrderedSelectFilter.refresh_icons(field_id);
 
         // Get autocomplete url
-        var resultsBox = $('#' + field_id + '_from').addClass(field_id + '_results');
+        var resultsBox = django.jQuery('#' + field_id + '_from').addClass(field_id + '_results');
         var url = resultsBox.attr("data-autocomplete-light-url");
         // Convert search function to use a django-autocomplete-light view instead of rendering all content from the get-go 
         // This is shoved in here to make sure it happens after the widget has been constructed
-        var searchBox = $('#' + field_id + '_input');
+        var searchBox = django.jQuery('#' + field_id + '_input');
         searchBox.focus(function(e) {
-            var searchField = $(e.currentTarget);
+            var searchField = django.jQuery(e.currentTarget);
 
-            var results = $('.' + field_id + '_results option');
+            var results = django.jQuery('.' + field_id + '_results option');
             var resultsShowing = results.length > 0;
 
             if (!resultsShowing) {
@@ -207,7 +207,7 @@ var OrderedSelectFilter = {
         searchBox.keyup(function(e) {
             var searchTerm = searchBox[0].value;
 
-            var results = $('.' + field_id + '_results option');
+            var results = django.jQuery('.' + field_id + '_results option');
             var resultsShowing = results.length > 0;
 
             if (resultsShowing) {
@@ -217,16 +217,16 @@ var OrderedSelectFilter = {
         });
     },
     refresh_icons: function(field_id) {
-        var from = $('#' + field_id + '_from');
-        var to = $('#' + field_id + '_to');
+        var from = django.jQuery('#' + field_id + '_from');
+        var to = django.jQuery('#' + field_id + '_to');
         var is_from_selected = from.find('option:selected').length > 0;
         var is_to_selected = to.find('option:selected').length > 0;
         // Active if at least one item is selected
-        $('#' + field_id + '_add_link').toggleClass('active', is_from_selected);
-        $('#' + field_id + '_remove_link').toggleClass('active', is_to_selected);
+        django.jQuery('#' + field_id + '_add_link').toggleClass('active', is_from_selected);
+        django.jQuery('#' + field_id + '_remove_link').toggleClass('active', is_to_selected);
         // Active if the corresponding box isn't empty
-        $('#' + field_id + '_add_all_link').toggleClass('active', from.find('option').length > 0);
-        $('#' + field_id + '_remove_all_link').toggleClass('active', to.find('option').length > 0);
+        django.jQuery('#' + field_id + '_add_all_link').toggleClass('active', from.find('option').length > 0);
+        django.jQuery('#' + field_id + '_remove_all_link').toggleClass('active', to.find('option').length > 0);
     }
     // filter_key_up: function(event, field_id) {
     //     from = document.getElementById(field_id + '_from');
