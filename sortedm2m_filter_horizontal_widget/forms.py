@@ -78,10 +78,10 @@ class SortedFilteredSelectMultiple(forms.SelectMultiple):
             'all': (STATIC_URL + 'sortedm2m_filter_horizontal_widget/widget.css', )
         }
 
-        js = (STATIC_URL + 'admin/js/jquery.init.js',
+        js = ('admin/js/jquery.init.js',
               STATIC_URL + 'sortedm2m_filter_horizontal_widget/OrderedSelectBox.js',
               STATIC_URL + 'sortedm2m_filter_horizontal_widget/OrderedSelectFilter.js',
-              STATIC_URL + 'admin/js/inlines.js')
+              'admin/js/inlines.js')
 
     def build_attrs(self, attrs=None, extra_attrs=None, **kwargs):
         attrs = dict(attrs, **kwargs)
